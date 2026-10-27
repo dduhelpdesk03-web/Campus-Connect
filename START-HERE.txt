@@ -1,0 +1,40 @@
+CAMPUSCONNECT — START HERE
+==========================
+
+This ZIP contains the complete website, its protected admin panel, and the database setup. It does NOT contain a real admin password or database credentials.
+
+1. EXTRACT AND UPLOAD TO GITHUB
+   - Extract this ZIP on your computer.
+   - Create a repository at https://github.com/new
+   - Upload the extracted project files and folders into the repository root. Include the src, public, drizzle and scripts folders, package.json, package-lock.json and vercel.json.
+   - Do not upload a real .env file, passwords, database URLs, node_modules, or .next.
+
+2. CREATE A FREE DATABASE
+   - Create a Free project at https://console.neon.tech/
+   - Select Connect and copy the POOLED connection string. You will use it as DATABASE_URL.
+   - Turn connection pooling OFF and copy the DIRECT connection string. You will use it as DATABASE_DIRECT_URL.
+   - These URLs contain private credentials. Do not share them or put them in GitHub.
+
+3. DEPLOY THE WEBSITE
+   - Go to https://vercel.com/new and import your GitHub repository.
+   - Choose Vercel Hobby if you are eligible. Hobby is for personal, non-commercial use.
+   - Before clicking Deploy, add these server-side environment variables in Vercel:
+       DATABASE_URL         = your Neon pooled connection string
+       DATABASE_DIRECT_URL  = your Neon direct connection string
+       ADMIN_PASSWORD       = a strong password YOU choose, at least 12 characters
+       ADMIN_SESSION_SECRET = a DIFFERENT random secret, at least 32 characters
+   - Generate passwords with a password manager or secure random generator. Never post them in GitHub, chats, or public pages.
+   - Click Deploy. The website creates its database tables automatically during the build.
+
+4. OPEN YOUR LIVE WEBSITE AND ADMIN PANEL
+   - After deployment succeeds, copy the production *.vercel.app address from your Vercel project.
+   - Share that address with students.
+   - To manage the website, add /admin to the end of your address and sign in with your ADMIN_PASSWORD.
+   - The admin panel lets you add, edit, and remove notices, resources, links, FAQs and events, update homepage text, and answer student questions.
+   - If you change Vercel environment variables later, redeploy the project.
+
+5. IMPORTANT FREE-PLAN NOTES
+   - You can start without a paid subscription within the providers' free limits. A custom domain is optional and normally costs money.
+   - No provider can promise a free link forever. Plans, limits and terms can change; a site may become unavailable if limits are exceeded. Neon may sleep when idle.
+   - Back up your database and GitHub project regularly. Verify notices and event dates with official sources.
+   - For the complete instructions and security notes, read README.md or open /setup on the website.
