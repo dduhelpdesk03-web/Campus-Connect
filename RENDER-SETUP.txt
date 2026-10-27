@@ -1,0 +1,45 @@
+CAMPUSCONNECT — RENDER BLUEPRINT SETUP
+=====================================
+
+ERROR: "Blueprint file render.yaml not found on main branch."
+CAUSE: Render needs a file named render.yaml on the selected GitHub branch. The older ZIP only included Vercel configuration.
+
+QUICK FIX FOR THE ERROR IN YOUR SCREENSHOT
+----------------------------------------
+1. Download and extract the updated ZIP, or download render.yaml separately.
+2. Open your Campus-Connect repository on GitHub and select the main branch.
+3. Use Add file > Upload files to upload render.yaml. Put it next to package.json at the ROOT of the repository, not inside another folder and not as render.yaml.txt. Commit the change to main.
+4. In GitHub, confirm render.yaml is visible beside package.json when you open the repository. If your entire app is inside a nested folder, move the extracted project files to the repository root before continuing.
+5. Return to Render's New Blueprint page. Keep Branch = main and Blueprint Path = render.yaml (or leave it blank for the default). Click Retry.
+
+DATABASE AND ADMIN VALUES
+-------------------------
+6. Create or reuse a Free Neon PostgreSQL project at https://console.neon.tech/. Copy both connection strings from Connect:
+   DATABASE_URL: use the POOLED URL.
+   DATABASE_DIRECT_URL: use the DIRECT (unpooled) URL, for database migrations.
+   The two URLs must refer to the SAME database and branch. Never publish these private values on GitHub.
+7. When Render prompts, enter DATABASE_URL, DATABASE_DIRECT_URL, and ADMIN_PASSWORD. Choose your own strong admin password of at least 12 characters and store it safely.
+8. Render automatically generates ADMIN_SESSION_SECRET from this blueprint. You do not need to invent or publish it. For an already-created service, add any missing variables in the service's Environment settings, then save and redeploy; secret prompts appear only during initial blueprint creation.
+9. Check that the blueprint lists one Web Service with the Free plan and no paid resources. Deploy. The build installs dependencies, runs database migrations, and builds the app.
+10. Open the onrender.com address shown by Render after deployment. Visit the same address with /admin to manage information, links, resources and student questions. Sign in with the ADMIN_PASSWORD you chose.
+
+IF YOU PREFER NEW > WEB SERVICE INSTEAD OF A BLUEPRINT
+----------------------------------------------------
+Use a Node Web Service (NOT a Static Site), choose Free, and enter:
+  Build Command: npm ci --include=dev && node scripts/migrate.mjs && npm run build
+  Start Command: npm run start -- --hostname 0.0.0.0 --port $PORT
+  Health Check Path: /
+Add DATABASE_URL, DATABASE_DIRECT_URL, ADMIN_PASSWORD, and a DIFFERENT random ADMIN_SESSION_SECRET of at least 32 characters in Render's Environment settings. Set NODE_VERSION to 22. Do not paste secrets into your source code.
+
+IMPORTANT FREE-PLAN LIMITATIONS
+-------------------------------
+- This blueprint deliberately does not create a Render PostgreSQL database: Render's Free PostgreSQL database expires after 30 days. Use Neon Free instead, within its current limits.
+- Render Free web services sleep after 15 minutes without traffic and may take about a minute to wake up. Free plans have monthly usage limits and can be suspended. Outbound bandwidth or build usage can incur extra charges if you add a payment method; review Render's billing and spend controls.
+- Free services are for hobby/testing use, not guaranteed production uptime. No provider can guarantee free hosting forever. Keep backups and check the current terms.
+- Do not use a Static Site: this project needs server-side code for the admin panel, student forms and database.
+- Database connectivity can be checked at /api/health. The platform health check uses / so it does not continuously wake the database.
+
+Official documentation:
+https://render.com/docs/blueprint-spec
+https://render.com/docs/deploy-nextjs-app
+https://render.com/docs/free
